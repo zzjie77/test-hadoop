@@ -1,28 +1,23 @@
 package com.netvour.hadoop;
 
-
 import org.apache.hadoop.util.ProgramDriver;
 
 /**
- * ÔËĞĞÈë¿Ú
+ * è¿è¡Œå…¥å£
  */
 public class ExampleDriver {
-  
-  public static void main(String argv[]){
-    int exitCode = -1;
-    ProgramDriver pgd = new ProgramDriver();
-    try {
-      pgd.addClass("putmerge", PutMerge.class, 
-                "ºÏ²¢Ò»¸öÄ¿Â¼ÀïµÄÎÄ¼ş");	
-      pgd.addClass("wordcount", WordCount.class, 
-                   "A map/reduce program that counts the words in the input files.");
-      exitCode = pgd.run(argv);
-    }
-    catch(Throwable e){
-      e.printStackTrace();
-    }
-    
-    System.exit(exitCode);
-  }
+
+	public static void main(String argv[]) {
+		int exitCode = -1;
+		ProgramDriver pgd = new ProgramDriver();
+		try {
+			pgd.addClass("putmerge", PutMerge.class, "åˆå¹¶ä¸€ä¸ªç›®å½•é‡Œçš„æ–‡ä»¶");
+			pgd.addClass("wordcount", WordCount.class, "A map/reduce program that counts the words in the input files.");
+			exitCode = pgd.run(argv);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+
+		System.exit(exitCode);
+	}
 }
-	

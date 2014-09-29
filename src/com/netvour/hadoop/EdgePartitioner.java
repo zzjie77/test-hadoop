@@ -5,21 +5,21 @@ import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.Partitioner;
 
 /**
- * ÊµÏÖ×Ô¼ºµÄPartitioner£¬Ä¬ÈÏÊÇ»á°´¶ÔÏóµÄ¹şÏ£Öµ½øĞĞ·ÖÇø
- * ÒªÊµÏÖÏàÍ¬µÄ³ö·¢µã·Öµ½ÏàÍ¬µÄreducerÔòÒª¸ÄĞ´³ÉÈçÏÂ
+ * å®ç°è‡ªå·±çš„Partitionerï¼Œé»˜è®¤æ˜¯ä¼šæŒ‰å¯¹è±¡çš„å“ˆå¸Œå€¼è¿›è¡Œåˆ†åŒº è¦å®ç°ç›¸åŒçš„å‡ºå‘ç‚¹åˆ†åˆ°ç›¸åŒçš„reduceråˆ™è¦æ”¹å†™æˆå¦‚ä¸‹
+ * 
  * @author zzjie
- *
+ * 
  */
-public class EdgePartitioner implements Partitioner<Edge, Writable>
-{
+public class EdgePartitioner implements Partitioner<Edge, Writable> {
 	/**
-	 * ·µ»ØÒ»¸ö0ÖÁreduceÈÎÎñÊıÖ®¼äµÄÕûÊı
+	 * è¿”å›ä¸€ä¸ª0è‡³reduceä»»åŠ¡æ•°ä¹‹é—´çš„æ•´æ•°
 	 */
-    @Override
-    public int getPartition(Edge key, Writable value, int numPartitions)
-    {
-        return key.getDepartureNode().hashCode() % numPartitions;
-    }
-    @Override
-    public void configure(JobConf conf) { }
+	@Override
+	public int getPartition(Edge key, Writable value, int numPartitions) {
+		return key.getDepartureNode().hashCode() % numPartitions;
+	}
+
+	@Override
+	public void configure(JobConf conf) {
+	}
 }

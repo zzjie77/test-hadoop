@@ -11,44 +11,42 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.GenericOptionsParser;
 
 /**
- * ½«Ò»¸öÄ¿Â¼µÄÎÄ¼şÔÚ±£´æµ½hdfsµÄ¹ı³ÌÖĞºÏ²¢³ÉÒ»¸öÎÄ¼ş
- * ¶ø²»ÊÇÏÈºÏ²¢ÔÙ±£´æµ½hdfs
- * @author zzjie
- * ²»ÄÜÖ±½ÓÔÚeclipse run on hadoop£¬³ı·Çeclipse×°ÔÚmasterÉÏ£¬·ñÔòÒª³Éjar°üscpµ½materÉÏÔËĞĞ
- * ÔËĞĞÇ°ÒªÔÚjarËùÔÚÄ¿Â¼´´½¨inputÄ¿Â¼£¬²¢´´½¨Èô¸É¸öÎÄ¼ş
- * hadoop jar test-hadoop.jar putmerge input outputFile 
+ * å°†ä¸€ä¸ªç›®å½•çš„æ–‡ä»¶åœ¨ä¿å­˜åˆ°hdfsçš„è¿‡ç¨‹ä¸­åˆå¹¶æˆä¸€ä¸ªæ–‡ä»¶ è€Œä¸æ˜¯å…ˆåˆå¹¶å†ä¿å­˜åˆ°hdfs
+ * 
+ * @author zzjie ä¸èƒ½ç›´æ¥åœ¨eclipse run on hadoopï¼Œé™¤éeclipseè£…åœ¨masterä¸Šï¼Œå¦åˆ™è¦æˆjaråŒ…scpåˆ°materä¸Šè¿è¡Œ è¿è¡Œå‰è¦åœ¨jaræ‰€åœ¨ç›®å½•åˆ›å»ºinputç›®å½•ï¼Œå¹¶åˆ›å»ºè‹¥å¹²ä¸ªæ–‡ä»¶
+ *         hadoop jar test-hadoop.jar putmerge input outputFile
  */
 public class PutMerge {
-	
+
 	public static void main(String[] args) throws IOException {
 		Configuration conf = new Configuration();
 		String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-	    if (otherArgs.length != 2) {
-	      System.err.println("Usage: putmerge <in> <out>");
-	      System.exit(2);
-	    }
-		
+		if (otherArgs.length != 2) {
+			System.err.println("Usage: putmerge <in> <out>");
+			System.exit(2);
+		}
+
 		FileSystem hdfs = FileSystem.get(conf);
 		FileSystem local = FileSystem.getLocal(conf);
-		
-		// 1. Ö¸¶¨ÊäÈëÄ¿Â¼ºÍÊä³öÎÄ¼ş
-		Path inputDir = new Path(otherArgs[0]); 
+
+		// 1. æŒ‡å®šè¾“å…¥ç›®å½•å’Œè¾“å‡ºæ–‡ä»¶
+		Path inputDir = new Path(otherArgs[0]);
 		Path hdfsFile = new Path(otherArgs[1]);
-		
+
 		try {
-			// 2. »ñÈ¡Ò»×éÊäÈëÎÄ¼ş
+			// 2. è·å–ä¸€ç»„è¾“å…¥æ–‡ä»¶
 			FileStatus[] inputFiles = local.listStatus(inputDir);
-			
-			// 3. ´´½¨hdfsÊä³öÁ÷     FSDataInputStreamÊÇ¼Ì³ĞjdkµÄDataOutputStream£¬µ«ÊÇ¼ÓÉÏÁËËæ»ú¶ÁÈ¡
+
+			// 3. åˆ›å»ºhdfsè¾“å‡ºæµ FSDataInputStreamæ˜¯ç»§æ‰¿jdkçš„DataOutputStreamï¼Œä½†æ˜¯åŠ ä¸Šäº†éšæœºè¯»å–
 			FSDataOutputStream out = hdfs.create(hdfsFile);
 			for (int i = 0; i < inputFiles.length; i++) {
 				System.out.println(inputFiles[i].getPath().getName());
-				// 4. ´ò¿ª±¾µØÎÄ¼şÊäÈëÁ÷
+				// 4. æ‰“å¼€æœ¬åœ°æ–‡ä»¶è¾“å…¥æµ
 				FSDataInputStream in = local.open(inputFiles[i].getPath());
 				byte[] buffer = new byte[256];
 				int bytesRead = 0;
-				while((bytesRead = in.read(buffer)) != -1) {
-					out.write(buffer, 0 , bytesRead);
+				while ((bytesRead = in.read(buffer)) != -1) {
+					out.write(buffer, 0, bytesRead);
 				}
 				in.close();
 			}
