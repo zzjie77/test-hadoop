@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/yarn/lib/xz-1.0.jar"/>
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/yarn/lib/snappy-java-1.0.4.1.jar"/>
@@ -85,7 +86,7 @@
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.2.0.jar"/>
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/mapreduce/hadoop-mapreduce-client-hs-plugins-2.2.0.jar"/>
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/mapreduce/hadoop-mapreduce-client-hs-2.2.0.jar"/>
-	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/mapreduce/hadoop-mapreduce-client-core-2.2.0.jar"/>
+	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/mapreduce/hadoop-mapreduce-client-core-2.2.0.jar" sourcepath="E:/tools/java/hadoop-2.2.0-src"/>
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/mapreduce/hadoop-mapreduce-client-common-2.2.0.jar"/>
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/mapreduce/hadoop-mapreduce-client-app-2.2.0.jar"/>
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/common/lib/zookeeper-3.4.5.jar"/>
@@ -143,5 +144,8 @@
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/common/lib/activation-1.1.jar"/>
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/common/hadoop-nfs-2.2.0.jar"/>
 	<classpathentry kind="lib" path="E:/tools/java/hadoop-2.2.0/hadoop-2.2.0/share/hadoop/common/hadoop-common-2.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-dbutils-1.5.jar" sourcepath="E:/tools/java/apache/commons-dbutils-1.5-src.zip"/>
+	<classpathentry kind="lib" path="lib/druid-0.2.25.jar"/>
+	<classpathentry kind="lib" path="lib/ojdbc6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
