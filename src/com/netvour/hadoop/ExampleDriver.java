@@ -14,6 +14,7 @@ public class ExampleDriver {
 			pgd.addClass("putmerge", PutMerge.class, "合并一个目录里的文件");
 			pgd.addClass("wordcount", WordCount.class, "A map/reduce program that counts the words in the input files.");
 			pgd.addClass("findagent", FindAgent.class, "find agent");
+			pgd.addClass("findchangedmobile", FindChangedMobile.class, "find changed mobile");
 			exitCode = pgd.run(argv);
 		} catch (Throwable e) {
 			e.printStackTrace();

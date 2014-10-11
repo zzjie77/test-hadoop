@@ -6,6 +6,11 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.Random;
 
+/**
+ * 生成样例数据
+ * @author zzjie
+ *
+ */
 public class GenerateData {
 
 	public static void main(String[] args) throws Exception {

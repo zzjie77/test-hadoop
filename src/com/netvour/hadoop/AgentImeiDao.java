@@ -24,15 +24,43 @@ public class AgentImeiDao {
 	        return agentImeiDao;
 	    }
 
-	    public void save(String imei){
-	    	Connection conn = null;
+	    public void save(String imei) throws SQLException {
+	    	Connection conn = DataSourceUtil.getConnection();
+	    	this.save(conn, true, imei);
+	    }
+	    
+	    private void save(Connection conn, String imei){
+	    	this.save(conn, false, imei);
+	    }
+	    
+	    private void save(Connection conn, boolean closeConn, String imei){
 	        try {
 	            QueryRunner runner = new QueryRunner();
-	            conn = DataSourceUtil.getConnection();
-	            ScalarHandler<BigDecimal> handler = new ScalarHandler<BigDecimal>(1);
-	            if(!has(conn, false, imei)) {
+	            if(!has(conn, imei)) {
 	            	runner.update(conn, "insert into agent_imei values(?)", imei);	
 	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	        	try {
+	        		if(closeConn) {
+	        			DbUtils.close(conn);
+	        		}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	        }
+	    }
+	    
+	    public void save(Set<String> imeis){
+	    	if(imeis==null || imeis.size()==0)  
+	    		return;
+	    	Connection conn = null;
+	        try {
+	        	conn = DataSourceUtil.getConnection();
+	            for (String imei : imeis) {
+					this.save(conn, imei);
+				}
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } finally {
@@ -45,7 +73,12 @@ public class AgentImeiDao {
 	    }
 	    
 	    public boolean has(String imei) throws SQLException {
-			return has(DataSourceUtil.getConnection(), true, imei);
+			Connection conn = DataSourceUtil.getConnection();
+			return has(conn, true, imei);
+	    }
+	    
+	    private boolean has(Connection conn, String imei) {
+	    	return has(conn, false, imei);
 	    }
 	    
 	    private boolean has(Connection conn, boolean closeConn, String imei) {
@@ -94,13 +127,16 @@ public class AgentImeiDao {
 	    }
 
 	    
-	    public static void main(String[] args) {
+	    public static void main(String[] args) throws SQLException {
 //	    	Set<String> all = AgentImeiDao.getInstance().all();
 //	    	for (String item : all) {
 //				System.out.println(item);
 //			}
 	    	
-	    	AgentImeiDao.getInstance().save("45699902175648100");
+	    	Connection conn = DataSourceUtil.getConnection();
+	    	System.out.println(AgentImeiDao.getInstance().has(conn, "45699902175648102"));
+	    	AgentImeiDao.getInstance().save(conn, "45699902175648102");
+	    	System.out.println(AgentImeiDao.getInstance().has(conn, "45699902175648102"));
 		}
 	    
 }

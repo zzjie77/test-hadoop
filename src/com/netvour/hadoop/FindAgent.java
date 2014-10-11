@@ -1,6 +1,8 @@
 package com.netvour.hadoop;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
@@ -10,6 +12,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.filecache.DistributedCache;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
@@ -32,6 +35,9 @@ public class FindAgent {
 		}
 	}
 
+	/**
+	 * Combine和Reduce的不同在于，Combine没有数据库交互
+	 */
 	public static class Combine extends Reducer<Text, IntWritable, Text, IntWritable> {
 		private IntWritable result = new IntWritable();
 		
@@ -47,18 +53,28 @@ public class FindAgent {
 	
 	public static class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 		private IntWritable result = new IntWritable();
-		
-		private AgentImeiDao agentImeiDao = AgentImeiDao.getInstance();
+		private Set<String> imeis = new HashSet<String>();
 		
 		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
 			int sum = 0;
 			for (IntWritable val : values) {
 				sum += val.get();
 			}
-			//TODO 大于某个设置的值
+			//TODO 大于某个设置的值，则认为是代理商
 			if(sum > 5) {
-				agentImeiDao.save(key.toString()); 
+				imeis.add(key.toString());
+				result.set(sum);
+				context.write(key, result);
 			}
+		}
+		
+		/**
+		 * reduce结束时保存代理商imei到数据库
+		 */
+		@Override
+		protected void cleanup(Context context) throws IOException, InterruptedException {
+			super.cleanup(context);
+			AgentImeiDao.getInstance().save(imeis);
 		}
 	}
 
@@ -66,7 +82,7 @@ public class FindAgent {
 		Configuration conf = new Configuration();
 		String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
 		if (otherArgs.length != 2) {
-			System.err.println("Usage: wordcount <in> <out>");
+			System.err.println("Usage: findagent <in> <out>");
 			System.exit(2);
 		}
 		Job job = Job.getInstance(conf, "find agent");
